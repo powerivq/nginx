@@ -24,4 +24,3 @@ EXPOSE 80
 EXPOSE 443
 HEALTHCHECK --interval=5s CMD curl -f http://127.0.0.1/healthcheck || exit 1
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-

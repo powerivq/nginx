@@ -6,4 +6,3 @@ do
   nginx -s reload
   sleep 86400
 done
-
