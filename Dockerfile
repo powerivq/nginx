@@ -14,6 +14,9 @@ RUN apt-get update -yq && apt-get upgrade -yq \
     && ln -s -f /usr/local/nginx/sbin/nginx /bin/nginx
 
 COPY nginx.conf /etc/nginx/
+COPY cloudflare.conf /etc/nginx/
+COPY ssl.conf /etc/nginx/
+COPY monitoring.conf /etc/nginx/
 COPY fastcgi_params /etc/nginx/
 COPY reload.sh /reload.sh
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf 
