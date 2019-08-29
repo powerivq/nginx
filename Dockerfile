@@ -6,7 +6,7 @@ RUN apt-get update -yq && apt-get upgrade -yq \
     && cd /ngx_brotli && git submodule update --init \
     && mkdir /build && cd /build \
     && /bin/bash -c "bash <(curl -k -f -L -sS https://ngxpagespeed.com/install) -p -y -n latest \
-        -a '--with-debug --with-http_auth_request_module --with-http_ssl_module --with-http_realip_module --with-http_v2_module --with-http_gzip_static_module --with-ipv6 --add-module=/ngx_brotli --with-cc-opt=\"-g -O2\" --pid-path=/run/nginx.pid --conf-path=/etc/nginx/nginx.conf'" \
+        -a '--with-debug --with-http_stub_status_module --with-http_auth_request_module --with-http_ssl_module --with-http_realip_module --with-http_v2_module --with-http_gzip_static_module --with-ipv6 --add-module=/ngx_brotli --with-cc-opt=\"-g -O2\" --pid-path=/run/nginx.pid --conf-path=/etc/nginx/nginx.conf'" \
     && SUDO_FORCE_REMOVE=yes apt-get remove wget git sudo build-essential zlib1g-dev libssl-dev libpcre3-dev openssl unzip uuid-dev -yq --purge \
     && apt-get autoremove -yq \
     && cd /etc/nginx \
@@ -22,5 +22,6 @@ COPY dhparam.pem /dhparam.pem
 WORKDIR /etc/nginx
 EXPOSE 80
 EXPOSE 443
-HEALTHCHECK --interval=5s CMD curl -f http://127.0.0.1/healthcheck || exit 1
+EXPOSE 8880
+HEALTHCHECK --interval=5s CMD curl -f http://127.0.0.1:8880/nginx_status || exit 1
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
