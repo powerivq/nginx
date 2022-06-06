@@ -2,7 +2,7 @@ name: Build on schedule
 
 on:
   schedule:
-    - cron: '35 12 1 * *''
+    - cron: '35 12 1 * *'
 
 jobs:
   build:
