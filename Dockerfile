@@ -1,6 +1,14 @@
 FROM nginx:stable-alpine-perl
 
-RUN apk --update --no-cache add supervisor
+# The official binary includes stream and ssl_preread statically.
+RUN apk --no-cache add supervisor curl
+
+COPY tests/stream.conf /tmp/stream-test.conf
+RUN nginx -V 2>&1 | grep -Eq -- ' --with-stream( |$)' \
+    && nginx -V 2>&1 | grep -Eq -- ' --with-stream_ssl_preread_module( |$)' \
+    && nginx -t -c /tmp/stream-test.conf \
+    && rm /tmp/stream-test.conf \
+    && mkdir -p /etc/nginx/stream-enabled
 
 COPY nginx.conf /etc/nginx/
 COPY cloudflare.conf /etc/nginx/
